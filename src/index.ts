@@ -1,4 +1,4 @@
-import { parseModel } from "./parse-metdata";
+import { parseModel } from "./metadata";
 import { Example } from "./example";
 import { generateDMMF } from "./dmmf";
 
