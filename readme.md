@@ -12,7 +12,7 @@ export class Example {
   @ID()
   @Field()
   @Documentation("This is the ID of the row")
-  @Default("now()")
+  @Default("uuid()")
   id!: string;
 
   @Field()
@@ -22,6 +22,7 @@ export class Example {
 
   @Field()
   @Default(0)
+  @Unique()
   count!: number;
 }
 ```

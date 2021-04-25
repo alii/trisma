@@ -7,6 +7,4 @@ const model = parseModel(Example);
 void generateDMMF({
   models: [model],
   enums: [],
-})
-  .then(JSON.stringify)
-  .then(console.log);
+}).then(console.log);
