@@ -14,6 +14,7 @@ export const enum MetadataKeys {
   UNIQUE = "prisma:field:unique",
   FIELD_TYPE = "prisma:field:type",
   IS_UPDATED_AT = "prisma:field:is-updated-at",
+  CLASS_DOCUMENTATION = "prisma:class:documentation",
 }
 
 function getFieldNames(target: Object): string[] {
@@ -91,6 +92,16 @@ export function Model(name?: string): ClassDecorator {
     Reflect.defineMetadata(
       MetadataKeys.MODEL_NAME,
       name || target.name,
+      target
+    );
+  };
+}
+
+export function ModelDocumentation(documentation: string): ClassDecorator {
+  return (target) => {
+    Reflect.defineMetadata(
+      MetadataKeys.CLASS_DOCUMENTATION,
+      documentation,
       target
     );
   };
