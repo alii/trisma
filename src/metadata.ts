@@ -10,12 +10,16 @@ export function parseModel(model: Object): DMMF.Model {
 
   const fields = fieldNames.map(
     (field): DMMF.Field => {
-      const type = Reflect.getMetadata(
-        "design:type",
-        // @ts-ignore It does exist
-        model.prototype,
-        field
-      ) as Function;
+      const type =
+        (Reflect.getMetadata(MetadataKeys.FIELD_TYPE, model, field) as
+          | string
+          | undefined) ??
+        (Reflect.getMetadata(
+          "design:type",
+          // @ts-ignore It does exist
+          model.prototype,
+          field
+        ) as Function).name;
 
       const nullable = Reflect.getMetadata(MetadataKeys.NULLABLE, model, field);
 
@@ -35,23 +39,30 @@ export function parseModel(model: Object): DMMF.Model {
       const isUnique = !!Reflect.getMetadata(MetadataKeys.UNIQUE, model, field);
 
       const fieldType =
-        type.name === "Array"
+        type === "__list"
           ? (Reflect.getMetadata(
               MetadataKeys.ARRAY_TYPE,
               model,
               field
-            ) as Function)
+            ) as Function).name
           : type;
+
+      const isUpdatedAt = !!Reflect.getMetadata(
+        MetadataKeys.IS_UPDATED_AT,
+        model,
+        field
+      );
 
       return {
         isId,
         isUnique,
+        isUpdatedAt,
         name: field,
         isGenerated: false,
-        type: fieldType.name === "Number" ? "Int" : fieldType.name,
+        type: fieldType,
         isRequired: !nullable,
         kind: "scalar",
-        isList: type.name === "Array",
+        isList: type === "Array",
         default: defaultValue ?? null,
         hasDefaultValue: typeof defaultValue !== "undefined",
         documentation: documentation ?? null,

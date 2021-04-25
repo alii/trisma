@@ -7,4 +7,6 @@ const model = parseModel(Example);
 void generateDMMF({
   models: [model],
   enums: [],
-}).then(console.log);
+}).then((dmmf) => {
+  console.log(dmmf.datamodel.models[0]);
+});

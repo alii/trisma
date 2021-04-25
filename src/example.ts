@@ -7,6 +7,7 @@ import {
   Model,
   Nullable,
   Unique,
+  UpdatedAt,
 } from "./decorators";
 
 @Model()
@@ -23,7 +24,14 @@ export class Example {
   names?: string[];
 
   @Field()
-  @Default(0)
+  created_at!: Date;
+
+  @Field()
+  @UpdatedAt()
+  updated_at!: Date;
+
+  @Field("Boolean")
+  @Default(true)
   @Unique()
-  count!: number;
+  count!: boolean;
 }

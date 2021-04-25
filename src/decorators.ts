@@ -10,6 +10,8 @@ export const enum MetadataKeys {
   DOCUMENTATION = "prisma:field:documentation",
   ID = "prisma:field:id",
   UNIQUE = "prisma:field:unique",
+  FIELD_TYPE = "prisma:field:type",
+  IS_UPDATED_AT = "prisma:field:is-updated-at",
 }
 
 function getFieldNames(target: Object): string[] {
@@ -92,9 +94,76 @@ export function Model(name?: string): ClassDecorator {
   };
 }
 
-export function Field(): PropertyDecorator {
+export function UpdatedAt(): PropertyDecorator {
+  return (target, property) => {
+    const design = Reflect.getMetadata(
+      "design:type",
+      target,
+      property
+    ) as Function;
+
+    if (design.name !== "Date") {
+      throw new Error(
+        `You must use @UpdatedAt on a Date only. You used a ${design.name} on ${
+          target.constructor.name
+        }.${property.toString()}`
+      );
+    }
+
+    Reflect.defineMetadata(
+      MetadataKeys.IS_UPDATED_AT,
+      true,
+      target.constructor,
+      property
+    );
+  };
+}
+
+export function Field(type?: string | Function): PropertyDecorator {
   return (target, property) => {
     const existingFields = getFieldNames(target);
+
+    const decidedType = (() => {
+      const design = Reflect.getMetadata(
+        "design:type",
+        target,
+        property
+      ) as Function;
+
+      switch (
+        type ? (type instanceof Function ? type.name : type) : design.name
+      ) {
+        case "Number":
+          return "Int";
+
+        case "Boolean":
+          return "Boolean";
+
+        case "Array":
+          return "__list";
+
+        case "String":
+          return "String";
+
+        case "BigInt":
+          return "BigInt";
+
+        case "Date":
+          return "DateTime";
+
+        default:
+          throw new Error(
+            `No type could be inferred for ${property.toString()}`
+          );
+      }
+    })();
+
+    Reflect.defineMetadata(
+      MetadataKeys.FIELD_TYPE,
+      decidedType,
+      target.constructor,
+      property
+    );
 
     Reflect.defineMetadata(
       MetadataKeys.FIELDS,
