@@ -9,6 +9,7 @@ export const enum MetadataKeys {
   ARRAY_TYPE = "prisma:field:array-type",
   DOCUMENTATION = "prisma:field:documentation",
   ID = "prisma:field:id",
+  UNIQUE = "prisma:field:unique",
 }
 
 function getFieldNames(target: Object): string[] {
@@ -20,6 +21,17 @@ export function Documentation(value: string): PropertyDecorator {
     Reflect.defineMetadata(
       MetadataKeys.DOCUMENTATION,
       value,
+      target.constructor,
+      property
+    );
+  };
+}
+
+export function Unique(): PropertyDecorator {
+  return (target, property) => {
+    Reflect.defineMetadata(
+      MetadataKeys.UNIQUE,
+      true,
       target.constructor,
       property
     );

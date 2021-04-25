@@ -9,7 +9,7 @@ export function parseModel(model: Object): DMMF.Model {
   ) as string[];
 
   const fields = fieldNames.map(
-    (field): Partial<DMMF.Field> => {
+    (field): DMMF.Field => {
       const type = Reflect.getMetadata(
         "design:type",
         // @ts-ignore It does exist
@@ -32,6 +32,7 @@ export function parseModel(model: Object): DMMF.Model {
       );
 
       const isId = !!Reflect.getMetadata(MetadataKeys.ID, model, field);
+      const isUnique = !!Reflect.getMetadata(MetadataKeys.UNIQUE, model, field);
 
       const fieldType =
         type.name === "Array"
@@ -44,7 +45,9 @@ export function parseModel(model: Object): DMMF.Model {
 
       return {
         isId,
+        isUnique,
         name: field,
+        isGenerated: false,
         type: fieldType.name === "Number" ? "Int" : fieldType.name,
         isRequired: !nullable,
         kind: "scalar",

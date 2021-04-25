@@ -6,6 +6,7 @@ import {
   ID,
   Model,
   Nullable,
+  Unique,
 } from "./decorators";
 
 @Model()
@@ -13,6 +14,7 @@ export class Example {
   @ID()
   @Field()
   @Documentation("This is the ID of the row")
+  @Default("now()")
   id!: string;
 
   @Field()
@@ -22,5 +24,6 @@ export class Example {
 
   @Field()
   @Default(0)
+  @Unique()
   count!: number;
 }
