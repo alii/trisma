@@ -26,6 +26,12 @@ export class Example {
 }
 ```
 
+### Do it work doe????
+
+Yes, it does generate a valid DMMF... mostly:
+
+![Screenshot](./.github/screenshot.png)
+
 ### Can I actually use it?
 
 Not yet. I have no idea how to convert a Prisma DMMF into a working Prisma Client (including migrations, studio, etc).
