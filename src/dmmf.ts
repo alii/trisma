@@ -6,6 +6,11 @@ export async function generateDMMF(datamodel: DMMF.Datamodel) {
   const models = await transformer.dmmfModelsdeserializer(datamodel.models);
   const enums = await transformer.dmmfEnumsDeserializer(datamodel.enums);
 
+  console.log(`
+      ${models} 
+      ${enums}
+    `);
+
   return sdk.getDMMF({
     datamodel: `
       ${models} 
