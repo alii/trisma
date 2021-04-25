@@ -1,5 +1,7 @@
 import "reflect-metadata";
 
+export const __LIST = "__list";
+
 export const enum MetadataKeys {
   RELATION = "prisma:relation",
   MODEL_NAME = "prisma:model-name",
@@ -140,7 +142,7 @@ export function Field(type?: string | Function): PropertyDecorator {
           return "Boolean";
 
         case "Array":
-          return "__list";
+          return __LIST;
 
         case "String":
           return "String";

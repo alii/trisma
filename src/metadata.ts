@@ -1,4 +1,4 @@
-import { MetadataKeys } from "./decorators";
+import { __LIST, MetadataKeys } from "./decorators";
 import { DMMF } from "@prisma/generator-helper";
 
 export function parseModel(model: Object): DMMF.Model {
@@ -39,7 +39,7 @@ export function parseModel(model: Object): DMMF.Model {
       const isUnique = !!Reflect.getMetadata(MetadataKeys.UNIQUE, model, field);
 
       const fieldType =
-        type === "__list"
+        type === __LIST
           ? (Reflect.getMetadata(
               MetadataKeys.ARRAY_TYPE,
               model,
