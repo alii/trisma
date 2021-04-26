@@ -1,7 +1,14 @@
 import "reflect-metadata";
 
+/**
+ * A constant for identifying list types
+ */
 export const __LIST = "__list";
 
+/**
+ * A list of Reflection metadata key names
+ * @enum
+ */
 export const enum MetadataKeys {
   RELATION = "prisma:relation",
   MODEL_NAME = "prisma:model-name",
@@ -17,10 +24,19 @@ export const enum MetadataKeys {
   CLASS_DOCUMENTATION = "prisma:class:documentation",
 }
 
+/**
+ * Gets a list of set field names from Reflection for this class (object)
+ * @internal
+ * @param target
+ */
 function getFieldNames(target: Object): string[] {
   return Reflect.getMetadata(MetadataKeys.FIELDS, target.constructor) || [];
 }
 
+/**
+ * Add documentation to this field
+ * @param value The documentation for this field
+ */
 export function Documentation(value: string): PropertyDecorator {
   return (target, property) => {
     Reflect.defineMetadata(
@@ -32,6 +48,9 @@ export function Documentation(value: string): PropertyDecorator {
   };
 }
 
+/**
+ * Marks this field as unique
+ */
 export function Unique(): PropertyDecorator {
   return (target, property) => {
     Reflect.defineMetadata(
@@ -43,12 +62,19 @@ export function Unique(): PropertyDecorator {
   };
 }
 
+/**
+ * Mark this field as an ID field
+ */
 export function ID(): PropertyDecorator {
   return (target, property) => {
     Reflect.defineMetadata(MetadataKeys.ID, true, target.constructor, property);
   };
 }
 
+/**
+ * Set the default value for this field
+ * @param value
+ */
 export function Default<T>(value: T): PropertyDecorator {
   return (target, property) => {
     Reflect.defineMetadata(
@@ -60,7 +86,12 @@ export function Default<T>(value: T): PropertyDecorator {
   };
 }
 
-export function Array(type: Function): PropertyDecorator {
+/**
+ * Mark the type of an array. Right now, TypeScript decorators cannot
+ * get the type of an array at runtime, so this is needed.
+ * @param type The primitive type of the array (String, Number, etc)
+ */
+export function Array(type: Function | string): PropertyDecorator {
   return (target, property) => {
     Reflect.defineMetadata(
       MetadataKeys.ARRAY_TYPE,
@@ -71,6 +102,9 @@ export function Array(type: Function): PropertyDecorator {
   };
 }
 
+/**
+ * Mark a field as nullable. If you have `strictNullChecks` enabled, also set `?` on your field type.
+ */
 export function Nullable(): PropertyDecorator {
   return (target, property) => {
     Reflect.defineMetadata(
@@ -85,7 +119,6 @@ export function Nullable(): PropertyDecorator {
 /**
  * Defines a new model to be loaded by prisma
  * @param name The name of the model. This is entirely optional
- * @constructor
  */
 export function Model(name?: string): ClassDecorator {
   return (target) => {
@@ -97,6 +130,10 @@ export function Model(name?: string): ClassDecorator {
   };
 }
 
+/**
+ * Set documentation on this model
+ * @param documentation The documentation for this model
+ */
 export function ModelDocumentation(documentation: string): ClassDecorator {
   return (target) => {
     Reflect.defineMetadata(
@@ -107,6 +144,9 @@ export function ModelDocumentation(documentation: string): ClassDecorator {
   };
 }
 
+/**
+ * Mark a date field as a `@updatedAt`.
+ */
 export function UpdatedAt(): PropertyDecorator {
   return (target, property) => {
     const design = Reflect.getMetadata(
@@ -132,6 +172,10 @@ export function UpdatedAt(): PropertyDecorator {
   };
 }
 
+/**
+ * Mark this property as a working field
+ * @param type An optional type for this field. This can be inferred most of the time through TypeScript.
+ */
 export function Field(type?: string | Function): PropertyDecorator {
   return (target, property) => {
     const existingFields = getFieldNames(target);
@@ -146,6 +190,8 @@ export function Field(type?: string | Function): PropertyDecorator {
       const map = {
         Number: "Int",
         Boolean: "Boolean",
+        // Arrays are an exception in Prisma. The type is primitive,
+        // but the field has an isList property.
         Array: __LIST,
         String: "String",
         BigInt: "BigInt",
@@ -178,21 +224,6 @@ export function Field(type?: string | Function): PropertyDecorator {
       MetadataKeys.FIELDS,
       [...existingFields, property],
       target.constructor
-    );
-  };
-}
-
-export function Relation(
-  property: string,
-  on: string,
-  name?: string
-): PropertyDecorator {
-  return (target, property) => {
-    Reflect.defineMetadata(
-      MetadataKeys.RELATION,
-      { on, name, property },
-      target,
-      property
     );
   };
 }
