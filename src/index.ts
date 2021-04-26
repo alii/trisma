@@ -8,5 +8,5 @@ void generateDMMF({
   models: [model],
   enums: [],
 }).then((dmmf) => {
-  console.log(dmmf.datamodel.models[0]);
+  console.log(dmmf.datamodel.models);
 });

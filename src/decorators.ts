@@ -143,32 +143,28 @@ export function Field(type?: string | Function): PropertyDecorator {
         property
       ) as Function;
 
-      switch (
-        type ? (type instanceof Function ? type.name : type) : design.name
-      ) {
-        case "Number":
-          return "Int";
+      const map = {
+        Number: "Int",
+        Boolean: "Boolean",
+        Array: __LIST,
+        String: "String",
+        BigInt: "BigInt",
+        Date: "DateTime",
+      } as const;
 
-        case "Boolean":
-          return "Boolean";
+      const key = type
+        ? type instanceof Function
+          ? type.name
+          : type
+        : design.name;
 
-        case "Array":
-          return __LIST;
+      const typeName = map[key as keyof typeof map] as string | undefined;
 
-        case "String":
-          return "String";
-
-        case "BigInt":
-          return "BigInt";
-
-        case "Date":
-          return "DateTime";
-
-        default:
-          throw new Error(
-            `No type could be inferred for ${property.toString()}`
-          );
+      if (!typeName) {
+        throw new Error(`No type could be inferred for ${property.toString()}`);
       }
+
+      return typeName;
     })();
 
     Reflect.defineMetadata(

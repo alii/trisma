@@ -5,12 +5,14 @@ import {
   Field,
   ID,
   Model,
+  ModelDocumentation,
   Nullable,
   Unique,
   UpdatedAt,
 } from "./decorators";
 
 @Model()
+@ModelDocumentation("Documentation")
 export class Example {
   @ID()
   @Field()
