@@ -1,4 +1,4 @@
 export * from "./util";
-export * from "./dmmf";
+export * from "./schema";
 export * from "./decorators";
 export * from "./metadata";

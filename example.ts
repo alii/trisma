@@ -9,7 +9,7 @@ import {
   Nullable,
   Unique,
   UpdatedAt,
-  generateDMMF,
+  generateSchema,
   parseModel,
 } from "./src";
 
@@ -42,9 +42,9 @@ export class Example {
 
 const model = parseModel(Example);
 
-void generateDMMF({
+void generateSchema({
   models: [model],
   enums: [],
-}).then((dmmf) => {
-  console.log(dmmf.datamodel.models);
+}).then((schema) => {
+  console.log(schema);
 });
