@@ -59,6 +59,12 @@ export function parseModel(model: Object): DMMF.Model {
         field
       );
 
+      const isRequired = !nullable;
+
+      if (!isRequired && type === __LIST) {
+        throw new Error("An array cannot be nullable!");
+      }
+
       return {
         isId,
         isUnique,
@@ -66,9 +72,9 @@ export function parseModel(model: Object): DMMF.Model {
         name: field,
         isGenerated: false,
         type: fieldType,
-        isRequired: !nullable,
+        isRequired,
         kind: "scalar",
-        isList: type === "Array",
+        isList: type === __LIST,
         default: defaultValue,
         hasDefaultValue: typeof defaultValue !== "undefined",
         documentation: documentation ?? null,

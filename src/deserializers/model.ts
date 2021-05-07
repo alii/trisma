@@ -69,7 +69,7 @@ export class Model extends AbstractDeserializer<DMMF.Model> {
       .map((field) => {
         switch (field.kind) {
           case "scalar": {
-            return `${field.name} ${field.type}${
+            return `${field.name} ${field.type}${field.isList ? "[]" : ""}${
               !field.isRequired ? "?" : ""
             } ${Model.handleFieldAttributes(field)}`;
           }

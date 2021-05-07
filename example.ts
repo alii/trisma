@@ -23,15 +23,12 @@ export class Example {
   id!: string;
 
   @Field()
-  looskie!: boolean;
+  @Array(String)
+  names!: string[];
 
   @Field()
   @Nullable()
-  @Array(String)
-  names?: string[];
-
-  @Field()
-  created_at!: Date;
+  created_at?: Date;
 
   @Field()
   @UpdatedAt()
