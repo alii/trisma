@@ -9,7 +9,9 @@ import {
   Nullable,
   Unique,
   UpdatedAt,
-} from "./decorators";
+  generateDMMF,
+  parseModel,
+} from "./src";
 
 @Model()
 @ModelDocumentation("Documentation")
@@ -37,3 +39,12 @@ export class Example {
   @Unique()
   count!: boolean;
 }
+
+const model = parseModel(Example);
+
+void generateDMMF({
+  models: [model],
+  enums: [],
+}).then((dmmf) => {
+  console.log(dmmf.datamodel.models);
+});

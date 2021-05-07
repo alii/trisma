@@ -13,31 +13,3 @@ export async function generateDMMF(datamodel: DMMF.Datamodel) {
     `,
   });
 }
-
-// void generateDMMF({
-//   enums: [],
-//   models: [
-//     {
-//       name: "Balls",
-//       isEmbedded: false,
-//       dbName: null,
-//       fields: [
-//         {
-//           name: "id",
-//           isId: true,
-//           type: "Boolean",
-//           isRequired: true,
-//           isUnique: false,
-//           isGenerated: false,
-//           isList: false,
-//           kind: "scalar",
-//           hasDefaultValue: false,
-//         },
-//       ],
-//       uniqueFields: [],
-//       uniqueIndexes: [],
-//       idFields: [],
-//     },
-//   ],
-// }).then(console.log);
-//
