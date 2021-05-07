@@ -9,7 +9,6 @@
   "dependencies": {
     "@prisma/generator-helper": "^2.22.1",
     "@prisma/sdk": "^2.22.1",
-    "prisma-schema-transformer": "^0.8.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
