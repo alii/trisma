@@ -35,7 +35,7 @@ export class Model extends AbstractDeserializer<DMMF.Model> {
     const results: string[] = [];
 
     if (typeof field.default !== "undefined") {
-      if (typeof field.default === "object") {
+      if (typeof field.default === "object" && field.default !== null) {
         results.push(`@default(${field.default.name}(${field.default.args}))`);
       } else if (typeof field.default === "string") {
         results.push(`@default("${field.default}")`);

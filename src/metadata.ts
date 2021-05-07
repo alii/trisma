@@ -69,7 +69,7 @@ export function parseModel(model: Object): DMMF.Model {
         isRequired: !nullable,
         kind: "scalar",
         isList: type === "Array",
-        default: defaultValue ?? null,
+        default: defaultValue,
         hasDefaultValue: typeof defaultValue !== "undefined",
         documentation: documentation ?? null,
       };
