@@ -11,6 +11,7 @@ export const __LIST = "__list";
  */
 export const enum MetadataKeys {
   RELATION = "prisma:relation",
+  MODEL_CLASS_NAME = "prisma:model-class-name",
   MODEL_NAME = "prisma:model-name",
   FIELDS = "prisma:fields",
   NULLABLE = "prisma:field:nullable",
@@ -122,6 +123,8 @@ export function Nullable(): PropertyDecorator {
  */
 export function Model(name?: string): ClassDecorator {
   return (target) => {
+    Reflect.defineMetadata(MetadataKeys.MODEL_CLASS_NAME, target.name, target);
+
     Reflect.defineMetadata(
       MetadataKeys.MODEL_NAME,
       name || target.name,

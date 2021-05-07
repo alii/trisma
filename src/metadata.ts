@@ -3,6 +3,10 @@ import { DMMF } from "@prisma/generator-helper";
 
 export function parseModel(model: Object): DMMF.Model {
   const name = Reflect.getMetadata(MetadataKeys.MODEL_NAME, model) as string;
+  const modelName = Reflect.getMetadata(
+    MetadataKeys.MODEL_CLASS_NAME,
+    model
+  ) as string;
 
   const classDocumentation = Reflect.getMetadata(
     MetadataKeys.CLASS_DOCUMENTATION,
@@ -83,7 +87,7 @@ export function parseModel(model: Object): DMMF.Model {
   );
 
   return {
-    name,
+    name: modelName,
     fields,
     documentation: classDocumentation,
     uniqueFields: [],
