@@ -23,6 +23,9 @@ export class Example {
   id!: string;
 
   @Field()
+  looskie!: boolean;
+
+  @Field()
   @Nullable()
   @Array(String)
   names?: string[];

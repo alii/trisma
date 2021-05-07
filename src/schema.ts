@@ -1,13 +1,21 @@
 import { DMMF } from "@prisma/generator-helper";
-import * as transformer from "prisma-schema-transformer";
 import { deserialize } from "./deserializers";
+import { formatSchema } from "@prisma/sdk";
 
-export async function generateSchema(datamodel: DMMF.Datamodel) {
+export async function generateSchema(
+  datamodel: DMMF.Datamodel
+): Promise<string> {
   const models = datamodel.models.map(deserialize);
-  const enums = await transformer.dmmfEnumsDeserializer(datamodel.enums);
+  // const enums = await transformer.dmmfEnumsDeserializer(datamodel.enums);
 
-  return `
-    ${models} 
-    ${enums}
-  `;
+  // return format(`
+  //   ${models}
+  //   ${enums}
+  // `);
+
+  return formatSchema({
+    schema: `
+      ${models}
+    `,
+  });
 }

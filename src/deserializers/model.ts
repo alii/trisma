@@ -70,7 +70,7 @@ export class Model extends AbstractDeserializer<DMMF.Model> {
         switch (field.kind) {
           case "scalar": {
             return `${field.name} ${field.type}${
-              field.isRequired ? "?" : ""
+              !field.isRequired ? "?" : ""
             } ${Model.handleFieldAttributes(field)}`;
           }
 
